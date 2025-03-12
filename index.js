@@ -24,11 +24,22 @@ const transporter = nodemailer.createTransport({
 
 // Configure Google Sheets API
 const auth = new google.auth.GoogleAuth({
-    keyFile: './service-account.json', // Path to your downloaded JSON key file
+    credentials: {
+        type: process.env.GOOGLE_SERVICE_ACCOUNT_TYPE,
+        project_id: process.env.GOOGLE_SERVICE_ACCOUNT_PROJECT_ID,
+        private_key_id: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
+        private_key: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL,
+        client_id: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_ID,
+        auth_uri: process.env.GOOGLE_SERVICE_ACCOUNT_AUTH_URI,
+        token_uri: process.env.GOOGLE_SERVICE_ACCOUNT_TOKEN_URI,
+        auth_provider_x509_cert_url: process.env.GOOGLE_SERVICE_ACCOUNT_AUTH_PROVIDER_CERT_URL,
+        client_x509_cert_url: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_CERT_URL,
+    },
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 const sheets = google.sheets({ version: 'v4', auth });
-const SPREADSHEET_ID = '1GiRuMOrjDAYlDK4JimgFLYpIdfv_TzEGuqWXcze3dq8'; // Replace with your Sheet ID
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID; // Use environment variable for Spreadsheet ID
 
 const bookings = new Map();
 
