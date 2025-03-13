@@ -54,15 +54,18 @@ async function appendToSheet(bookingId, booking, status) {
         [bookingId, booking.name, booking.email, booking.phone, booking.testType, status, timestamp]
     ];
     try {
-        await sheets.spreadsheets.values.append({
+        const response = await sheets.spreadsheets.values.append({
             spreadsheetId: SPREADSHEET_ID,
             range: 'Sheet1!A:G', // Adjust if your sheet has a different name
             valueInputOption: 'RAW',
             resource: { values },
         });
-        console.log('Data appended to Google Sheet:', values);
+        console.log('Data appended to Google Sheet:', response.data);
     } catch (error) {
-        console.error('Error appending to Google Sheet:', error);
+        console.error('Error appending to Google Sheet:', error.message);
+        if (error.response) {
+            console.error('Error details:', error.response.data);
+        }
     }
 }
 
