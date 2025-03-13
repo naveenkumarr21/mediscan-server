@@ -22,20 +22,24 @@ const transporter = nodemailer.createTransport({
     },
 });
 
+// Hardcoded Google Sheets API credentials
+const credentials = {
+    "type": "service_account",
+    "project_id": "booking-system-453516",
+    "private_key_id": "817cb007bf6fb151fb483974fe07493bfb1479e7",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC9D8X4xZkrsnwL\noClNlPKmIPyNJ4jxpXrzKFu6FSC3TXxCcaaAbwGAqtTLbohd8HqsfIlqtd97gNIz\ndqI8PZ6nuQrj0z1rUhtFhO0y25ZlQacgKfmtvLRRx1t+FmdTsWcXicdoL6zUS5mU\nfn9ZnfaeZbPKS+V/xmSl7KHTfcdbVwCSw8QBCpiGCqsS4maBlkE3y/DTqZWYBZtS\nS5yeFrkeCYyB9OZ0HUbXub8Xo0gUwZolG6iIVmIGPV7tqBXCUBkWZWhHOu2pI+8b\n2ytVqP8jrRaKa0O/7RBdI0NNDg8qkcPNdEFQXUupzMzy0V6y9arEpE5NPuuTYQah\nTDZYlP9tAgMBAAECggEAAQap42IRz7vl58Y/EyMLd2gBwYkFDuf//9EolkebvYLt\nJAsr2nyVEdaw1Z3MSFOQHDQyJrhv9bf1lr6TvidIyiOQnJCT6muFUbOZT0eudu7h\nR6USrCUJsXvsfNsFmohW7+Nuh/E3oJCnImLWsWzQXtGxz8I+WkWAXFTUGAARvzwk\n6oVLPs7tcw5kAz1z4XHYz770SlylI0Ibe3Z/aQ0gkvUvGjMwEeSFTZBqZhJ8d0cY\nqEDkLBu9XUd1Q7jcEWXCtEPE3rs32Wez02c2fiUUmKYwcA3GZUMIJks+J3HZd3E6\nA/Q8TMSLpcCbFaj6fYLbVBxFZufh77PXqCRzPIEsfQKBgQDlDqvCegmr5gH0L0fc\n5Xnp/IIANZLvbZ+QIq9DesjAiX3Uoh88DlqeceUrUKO2deeAxluR/6GcZQqxVIhH\nJ1RV1w2qEU6U5KS4e3NExrCbnSZJdWA5Xkz6fxZD2xkErC74AfMu/DiTuaAhftJd\nzCER+9BboLfU2Yp02i5uXHJncwKBgQDTTMKFaZu6+Ovfs8N6VBbgwwPbCWGgPLJJ\nZV5MgbAhTmwBQUZ53+/c4Vq42sFH5L7LYfRTPDu/26Cm/ZA+ObKDK1QMEOlKKdP7\nDJWPsCWuVjdSyRLf41tpIHeuk03giWdD3gmlZn0xIDeVbbZwHUiYkXQWxnmG1GOg\nbJZuSRiFnwKBgEvsd/xHbUtAOyeQQHa0zZtEambdWy3nnTsuc/+fBEnliQLhFg9X\nBqx8PiUEXq+NF0Y0+YdEP3JSf5/V0DIdlDO7y7iyceSigQLxUHzciw+ZoGY69MEv\nQ77IPz4QspM863ijVNMfITW+Epjnq50Rm2iVmjO06xovXVhsNXW5SOaHAoGAek+E\nihWHv8M3RlaYYMcsNw6rvK7BhC+eRD4ZR9AKVD1A57kRQpsODZ2lFjwKhcMzbidV\ndpj3PSe05vT/+gUMAEGkdReU8wkjW779FB+ysCfX/mPGOTMyRrg0jylVexQOYoq0\nqrmY3kb35deMM3m//BC2UjixQArRYJt6uHw3ZaECgYAG1PaqM1rjwrfJYUw5SR1C\nMjFmhw/SkW9QVzBfy21S5zzgWIrrbO5B6x8dUPyuL7dZerS7mo/L3nwBT8MWUnsl\nAEhJsTff3TA0CsAWtt6DdXRRRz14V33rd/orujYwMiq2RMBhZ28loLJUxwA4HCWO\nzgOp/u2LyEbmxmcQ7uSW2A==\n-----END PRIVATE KEY-----\n",
+    "client_email": "bookingservice@booking-system-453516.iam.gserviceaccount.com",
+    "client_id": "116391789445600507631",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bookingservice%40booking-system-453516.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+};
+
 // Configure Google Sheets API
 const auth = new google.auth.GoogleAuth({
-    credentials: {
-        type: process.env.GOOGLE_SERVICE_ACCOUNT_TYPE,
-        project_id: process.env.GOOGLE_SERVICE_ACCOUNT_PROJECT_ID,
-        private_key_id: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY_ID,
-        private_key: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL,
-        client_id: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_ID,
-        auth_uri: process.env.GOOGLE_SERVICE_ACCOUNT_AUTH_URI,
-        token_uri: process.env.GOOGLE_SERVICE_ACCOUNT_TOKEN_URI,
-        auth_provider_x509_cert_url: process.env.GOOGLE_SERVICE_ACCOUNT_AUTH_PROVIDER_CERT_URL,
-        client_x509_cert_url: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_CERT_URL,
-    },
+    credentials,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
 const sheets = google.sheets({ version: 'v4', auth });
